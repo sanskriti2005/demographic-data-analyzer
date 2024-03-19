@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 
@@ -10,12 +11,12 @@ def calculate_demographic_data(print_data=True):
 
     # What is the average age of men?
     male_df = df[df['sex'] == 'Male']
-    average_age_men = male_df['age'].mean
+    average_age_men = round(male_df['age'].mean(), 1)
 
     # What is the percentage of people who have a Bachelor's degree?
     total_people = len(df['education'])
     bachelors_people = (df['education'] == 'Bachelors').sum()
-    percentage_bachelors = (bachelors_people / total_people) * 100
+    percentage_bachelors = round((bachelors_people / total_people) * 100, 1)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
@@ -28,17 +29,17 @@ def calculate_demographic_data(print_data=True):
     adv_ed_rich = adv_ed[adv_ed['salary'] == '>50K']
     no_adv_ed_rich = no_adv_ed[no_adv_ed['salary'] == '>50K']
     
-    adv_ed_rich_len = len(adv_ed_rich['education'])
-    no_adv_rich = len(no_adv_ed_rich['education'])
+    adv_ed_rich_len = len(adv_ed_rich)
+    no_adv_rich = len(no_adv_ed_rich)
 
-    higher_education_rich = (adv_ed_rich_len/total_people) * 100
-    lower_education_rich = (no_adv_rich/total_people) * 100
+    higher_education_rich = round((adv_ed_rich_len/total_people) * 100, 1)
+    lower_education_rich = round((no_adv_rich/total_people) * 100, 1)
     
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = df['hours-per-week'].min()
 
     # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    rich = df[df['salary'].isin(['>50k'])]
+    rich = df[df['salary'].isin(['>50K'])]
     min_working_rich = rich['hours-per-week'] == min_work_hours
     num_min_workers = len(min_working_rich)
     rich_percentage = (num_min_workers/total_people) * 100
@@ -46,7 +47,9 @@ def calculate_demographic_data(print_data=True):
 
     # What country has the highest percentage of people that earn >50K?
     number_of_countries = len(rich['native-country'])
+    
     highest_earning_country = rich['native-country'].value_counts().idxmax()
+
     highest_earning_country_value = rich['native-country'].value_counts().max()
     highest_earning_country_percentage = (highest_earning_country_value/number_of_countries) * 100
 
@@ -81,3 +84,6 @@ def calculate_demographic_data(print_data=True):
         highest_earning_country_percentage,
         'top_IN_occupation': top_IN_occupation
     }
+
+ 
+
